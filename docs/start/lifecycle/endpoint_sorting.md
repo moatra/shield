@@ -35,6 +35,15 @@ From most specific to least specific.
 * [Reserved Segment](https://tools.ietf.org/html/rfc6570#section-3.2.3): `{+identifier}`
 
 If the number segments between two endpoints is different but the overlapping segments have the same specificity,
-preference is given to the endpoint with more segments.
+the endpoint with more segments is considered to be more specific.
 
 If they are still an exact match, Shield compares them by raw string values.
+
+# Endpoint Grouping
+
+Shield will load balance across endpoints that are considered "equivalent".  To be equivalent, two endpoints must:
+
+* Have the same HTTP method
+* Parse to the same list of segments (any `identifier` is ignored when checking for segment equality).
+* Can [consume](http://swagger.io/specification/#operationObject) the request's `Content-Type`.
+* Can [produce](http://swagger.io/specification/#operationObject) the request's desired `Content-Type`. 
